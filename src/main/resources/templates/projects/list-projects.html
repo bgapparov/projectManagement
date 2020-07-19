@@ -13,15 +13,17 @@
     	<!-- Add new Employee button -->
     	<a th:href="@{/projects/new}"
     	class="btn btn-primary btn-sm mb-3"> Add Projects</a>
-    	<table>
-    		<thead>
+    	<br></br>
+    	
+    	<table class="table table-bordered table-striped">
+    		<thead class="thead-dark">
     			<tr>
     				<th>Project name </th>
     				<th>Project stage </th>
     			</tr>
     		</thead>
     		<tbody>
-    			<tr th:each="aProject : ${projectList}">
+    			<tr th:each="aProject : ${projects}">
     			<td th:text="${aProject.name}" />
     			<td th:text="${aProject.stage}" />
     			</tr>

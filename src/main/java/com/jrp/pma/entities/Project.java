@@ -1,20 +1,38 @@
 package com.jrp.pma.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 
 @Entity
 public class Project {
 	
     @Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "project_seq")
 	private long projectId;
+    
 	private String name;
 	private String stage;
 	private String description;
+	
+	@ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, 
+			fetch = FetchType.LAZY)
+	@JoinTable(name = "project_employee",
+	joinColumns= @JoinColumn(name = "project_id"),
+	inverseJoinColumns = @JoinColumn(name = "employee_id"))
+	private List<Employee> employees = new ArrayList<>();
 	
 	public Project() {
 		
@@ -27,6 +45,16 @@ public class Project {
 		this.description = description;
 	}
 	
+	
+	
+	public List<Employee> getEmployees() {
+		return employees;
+	}
+
+	public void setEmployees(List<Employee> employees) {
+		this.employees = employees;
+	}
+
 	public long getProjectId() {
 		return projectId;
 	}
@@ -52,6 +80,12 @@ public class Project {
 		this.description = description;
 	}
 	
+	public void addEmployee(Employee emp) {
+		if(employees == null) {
+			employees = new ArrayList<>();
+		}
+		employees.add(emp);
+	}
 	
 	
 }
